@@ -1,0 +1,19 @@
+.main {
+  flex-grow: 1;
+  background-color: var(--greyish-bg-color);
+}
+
+.content {
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 70px;
+  margin-bottom: 50px;
+}
+
+.page_heading {
+  composes: heading from "./../../styleUtils.css";
+  color: var(--primary-font-color);
+  font-size: var(--title-font-size);
+  font-weight: 500;
+}

@@ -1,0 +1,28 @@
+.orchestra_list {
+  padding: 30px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  min-height: 350px;
+}
+
+.page_heading {
+  composes: heading from "./../../styleUtils.css";
+  color: var(--primary-font-color);
+  font-size: var(--title-font-size);
+  font-weight: 500;
+  padding-left: 30px;
+  margin-bottom: 10px;
+}
+
+.main {
+  flex-grow: 1;
+  min-height: 500px;
+}
+
+.content {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+}
