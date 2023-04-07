@@ -4,6 +4,7 @@ import InstrumentGenre from "../InstrumentGenre/InstrumentGenre";
 import { useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useGlobalContext } from "../../context/GlobalContext";
+import Preloader from "../Preloader/Preloader";
 
 const AddInstrument = () => {
   const { userInfo, setUserInfo } = useGlobalContext();
@@ -21,6 +22,7 @@ const AddInstrument = () => {
     title: { haserror: false, message: "" },
     genres: { haserror: false, message: "" },
   });
+  const [loading, setLoading] = useState(false);
 
   const handleSelect = (event) => {
     const select = event.target;
@@ -56,7 +58,8 @@ const AddInstrument = () => {
   };
 
   const postInstrument = async () => {
-    const url = `http://127.0.0.1:3007/user/${userInfo.id}/instrument`;
+    // const url = `http://127.0.0.1:3007/user/${userInfo.id}/instrument`;
+    const url = `https://daos.onrender.com/user/${userInfo.id}/instrument`;
     const options = {
       method: "POST",
       headers: {
@@ -67,8 +70,10 @@ const AddInstrument = () => {
     };
 
     try {
+      setLoading(true);
       const request = await fetch(url, options);
       const data = await request.json();
+      setLoading(false);
       if (data.success) {
         // add the instrument to instrument array in userInfo state
         setUserInfo({
@@ -162,72 +167,76 @@ const AddInstrument = () => {
 
   return (
     <main className={styles.main}>
-      <section className={styles.content}>
-        <BackLink component="/profile" />
-        <h2 className={styles.page_heading}>Tilføj instrument</h2>
-        <form className={styles.add_instrument_form} onSubmit={handleSubmit}>
-          <div className={styles.select_instrument_field}>
-            <select
-              id="instrument"
-              name="instrument"
-              value={instrumentData.instrument}
-              className={styles.select}
-              // required={true}
-              onChange={handleSelect}
-            >
-              <option defaultValue value="">
-                Vælg instrument
-              </option>
-              <option value="Piano">Piano</option>
-              <option value="Flute">Flute</option>
-              <option value="Drums">Drums</option>
-              <option value="Guitar">Guitar</option>
-            </select>
-            <span
-              className={`${styles.help_block} ${
-                errors.title.haserror ? "shown" : "hidden"
-              }`}
-            >
-              {errors.title.message}
-            </span>
-          </div>
-          <div className={styles.genre_form_field}>
-            <label className={styles.label} htmlFor="genres">
-              Genre
-            </label>
-            <select
-              id="genres"
-              name="genres"
-              // value={instrumentData.genres[0]}
-              className={styles.select}
-              // required
-              onChange={handleSelect}
-            >
-              <option value="">Vælg genre</option>
-              <option value="Kammermusik">Kammermusik</option>
-              <option value="Symfonik">Symfonik</option>
-              <option value="Romantisk">Romantisk</option>
-              <option value="Barok">Barok</option>
-              <option value="Folkemusik">Folkemusik</option>
-              <option value="Senmoderne">Senmoderne</option>
-              <option value="Senromantisk">Senromantisk</option>
-            </select>
-            <span
-              className={`${styles.help_block} ${
-                errors.genres.haserror ? "shown" : "hidden"
-              }`}
-            >
-              {errors.genres.message}
-            </span>
-            <div className={styles.instrument_genres}>{listOfGenres}</div>
-          </div>
-          <div className={styles.submit_field}>
-            <button type="submit" className={styles.submit_btn}>
-              Tilføj instrument
-            </button>
-          </div>
-        </form>
-      </section>
+      {loading ? (
+        <Preloader />
+      ) : (
+        <section className={styles.content}>
+          <BackLink component="/profile" />
+          <h2 className={styles.page_heading}>Tilføj instrument</h2>
+          <form className={styles.add_instrument_form} onSubmit={handleSubmit}>
+            <div className={styles.select_instrument_field}>
+              <select
+                id="instrument"
+                name="instrument"
+                value={instrumentData.instrument}
+                className={styles.select}
+                // required={true}
+                onChange={handleSelect}
+              >
+                <option defaultValue value="">
+                  Vælg instrument
+                </option>
+                <option value="Piano">Piano</option>
+                <option value="Flute">Flute</option>
+                <option value="Drums">Drums</option>
+                <option value="Guitar">Guitar</option>
+              </select>
+              <span
+                className={`${styles.help_block} ${
+                  errors.title.haserror ? "shown" : "hidden"
+                }`}
+              >
+                {errors.title.message}
+              </span>
+            </div>
+            <div className={styles.genre_form_field}>
+              <label className={styles.label} htmlFor="genres">
+                Genre
+              </label>
+              <select
+                id="genres"
+                name="genres"
+                // value={instrumentData.genres[0]}
+                className={styles.select}
+                // required
+                onChange={handleSelect}
+              >
+                <option value="">Vælg genre</option>
+                <option value="Kammermusik">Kammermusik</option>
+                <option value="Symfonik">Symfonik</option>
+                <option value="Romantisk">Romantisk</option>
+                <option value="Barok">Barok</option>
+                <option value="Folkemusik">Folkemusik</option>
+                <option value="Senmoderne">Senmoderne</option>
+                <option value="Senromantisk">Senromantisk</option>
+              </select>
+              <span
+                className={`${styles.help_block} ${
+                  errors.genres.haserror ? "shown" : "hidden"
+                }`}
+              >
+                {errors.genres.message}
+              </span>
+              <div className={styles.instrument_genres}>{listOfGenres}</div>
+            </div>
+            <div className={styles.submit_field}>
+              <button type="submit" className={styles.submit_btn}>
+                Tilføj instrument
+              </button>
+            </div>
+          </form>
+        </section>
+      )}
     </main>
   );
 };

@@ -2,15 +2,18 @@ import { useState, useEffect } from "react";
 import styles from "./UserOrchestras.module.css";
 import UserOrchestra from "../UserOrchestra/UserOrchestra";
 import { useGlobalContext } from "../../context/GlobalContext";
+import Preloader from "../Preloader/Preloader";
 
 const UserOrchestras = () => {
   const { userInfo } = useGlobalContext();
 
   const [orchestras, setOrchestras] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAllOrchestras = async () => {
-      const url = "http://127.0.0.1:3007/orchestra";
+      // const url = "http://127.0.0.1:3007/orchestra";
+      const url = "https://daos.onrender.com/orchestra";
       const options = {
         method: "GET",
         headers: {
@@ -18,9 +21,11 @@ const UserOrchestras = () => {
         },
       };
       try {
+        setLoading(true);
         let response = await fetch(url, options);
         response = await response.json();
         setOrchestras(response);
+        setLoading(false);
       } catch (err) {
         console.error(err);
       }
@@ -46,7 +51,8 @@ const UserOrchestras = () => {
   const addMember = async (event) => {
     const orchestraId = event.target.dataset.orchestra;
     const userId = event.target.dataset.user;
-    const url = `http://127.0.0.1:3007/orchestra/${orchestraId}/members`;
+    //const url = `http://127.0.0.1:3007/orchestra/${orchestraId}/members`;
+    const url = `https://daos.onrender.com/orchestra/${orchestraId}/members`;
     const options = {
       method: "PUT",
       headers: {
@@ -56,9 +62,11 @@ const UserOrchestras = () => {
       body: JSON.stringify({ id: userId }),
     };
     try {
+      setLoading(true);
       let response = await fetch(url, options);
       response = await response.json();
       updateState(response);
+      setLoading(false);
     } catch (err) {
       console.error(err);
     }
@@ -67,7 +75,8 @@ const UserOrchestras = () => {
   const deleteMember = async (event) => {
     const orchestraId = event.target.dataset.orchestra;
     const userId = event.target.dataset.user;
-    const url = `http://127.0.0.1:3007/orchestra/${orchestraId}/members/${userId}`;
+    // const url = `http://127.0.0.1:3007/orchestra/${orchestraId}/members/${userId}`;
+    const url = `https://daos.onrender.com/orchestra/${orchestraId}/members/${userId}`;
     const options = {
       method: "DELETE",
       headers: {
@@ -76,9 +85,11 @@ const UserOrchestras = () => {
       },
     };
     try {
+      setLoading(true);
       let response = await fetch(url, options);
       response = await response.json();
       updateState(response);
+      setLoading(false);
     } catch (err) {
       console.error(err);
     }
@@ -107,12 +118,16 @@ const UserOrchestras = () => {
   ));
   return (
     <main className={styles.main}>
-      <section className={styles.content}>
-        <h2 className={styles.page_heading}>Ensembler</h2>
-        <article className={styles.orchestra_list}>
-          {listOfAllOrchestras}
-        </article>
-      </section>
+      {loading ? (
+        <Preloader />
+      ) : (
+        <section className={styles.content}>
+          <h2 className={styles.page_heading}>Ensembler</h2>
+          <article className={styles.orchestra_list}>
+            {listOfAllOrchestras}
+          </article>
+        </section>
+      )}
     </main>
   );
 };
