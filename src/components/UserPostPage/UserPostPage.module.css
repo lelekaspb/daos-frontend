@@ -106,3 +106,38 @@
 .website a:active {
   color: var(--primary-font-color);
 }
+
+/************** media queries **************/
+@media only screen and (max-width: 750px) {
+  .content {
+    max-width: 500px;
+  }
+
+  .page_heading {
+    font-size: calc(1.7rem + 0.2vw);
+  }
+}
+
+@media only screen and (max-width: 550px) {
+  .content {
+    max-width: 400px;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .content {
+    max-width: 300px;
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: 0;
+    max-width: 130px;
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  .content {
+    max-width: 280px;
+  }
+}

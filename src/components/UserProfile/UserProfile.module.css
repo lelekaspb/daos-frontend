@@ -199,6 +199,14 @@
   }
 }
 
+@media only screen and (max-width: 850px) {
+  .user_details {
+    grid-template-columns: 1fr;
+    grid-template-rows: min-content min-content;
+    gap: 0;
+  }
+}
+
 @media only screen and (max-width: 720px) {
   .membership {
     display: none;

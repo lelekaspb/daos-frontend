@@ -123,7 +123,7 @@ const UserProfile = () => {
                 </div>
                 <div className={styles.user_details_right}>
                   <h2 className={styles.page_heading}>
-                    {userInfo.firstName}&nbsp;{userInfo.lastName}
+                    {userInfo.firstName} {userInfo.lastName}
                   </h2>
                   <span className={styles.created_at}>
                     Oprettet{" "}

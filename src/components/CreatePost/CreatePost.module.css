@@ -17,3 +17,22 @@
   font-size: var(--title-font-size);
   font-weight: 500;
 }
+
+/************** media queries **************/
+@media only screen and (max-width: 550px) {
+  .content {
+    max-width: 400px;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .content {
+    max-width: 300px;
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  .content {
+    max-width: 280px;
+  }
+}

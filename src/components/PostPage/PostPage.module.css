@@ -87,3 +87,46 @@
   width: 300px;
   text-align: center;
 }
+
+/************** media queries **************/
+@media only screen and (max-width: 850px) {
+  .content {
+    max-width: 700px;
+  }
+
+  .page_heading {
+    font-size: calc(1.7rem + 0.2vw);
+  }
+}
+
+@media only screen and (max-width: 750px) {
+  .content {
+    max-width: 400px;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .content {
+    max-width: 300px;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .content {
+    max-width: 300px;
+  }
+
+  .contact_btn {
+    min-width: 280px;
+  }
+
+  .website_link {
+    max-width: 250px;
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  .content {
+    max-width: 280px;
+  }
+}
