@@ -61,3 +61,10 @@
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
+
+/************** media queries **************/
+@media only screen and (max-width: 380px) {
+  .post {
+    width: 280px;
+  }
+}
