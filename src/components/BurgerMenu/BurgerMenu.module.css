@@ -1,50 +1,43 @@
-.header {
-  min-height: 60px;
-  border-bottom: solid var(--border-bottom-color) 1px;
-  padding: 10px 0;
-  /* position: relative; */
-}
-
-.nav {
-  display: flex;
-  justify-content: space-between;
-  margin: 0 30px;
-}
-
-.nav_left {
+.mobile_menu {
+  position: absolute;
   display: flex;
   flex-direction: column;
+  background-color: var(--white-color);
+  width: 100%;
+  height: calc(100% - 65px);
+  border-bottom: solid var(--border-bottom-color) 1px;
+  background-color: rgba(53, 57, 92, 0.5);
 }
 
-.logo_link {
-  text-decoration: none;
+.open {
+  transform: translateY(0);
 }
 
-.logo {
-  composes: heading from "./../../styleUtils.css";
-  color: var(--red-color);
-  font-size: calc(1.5rem + 0.3vw);
-  font-weight: 500;
+.closed {
+  transform: translateY(-100%);
 }
 
-.description {
-  color: var(--primary-font-color);
-  font-size: calc(0.7rem + 0.3vw);
-  font-weight: 400;
-}
-
-.nav_desktop {
-  padding: 0;
+.nav_mobile {
   list-style: none;
-  display: flex;
-  align-items: center;
-  gap: 30px;
+  padding: 5px 0;
+  height: auto;
+  margin-top: 0;
+  background-color: var(--white-color);
+  padding-bottom: 20px;
+  padding-top: 20px;
+}
+
+.nav_link,
+.nav_btn {
+  margin: 20px auto 10px auto;
+  text-align: center;
 }
 
 .nav_link a,
 .nav_btn_signup a,
 .nav_btn_login a {
   text-decoration: none;
+  display: inline-block;
 }
 
 .nav_link a {
@@ -55,11 +48,14 @@
 .nav_btn_signup {
   composes: btn_primary from "./../../styleUtils.css";
   text-decoration: none;
+  display: inline-block;
+  margin: 20px auto 10px auto;
 }
 
 .nav_btn_login {
   composes: btn_outline from "./../../styleUtils.css";
   text-decoration: none;
+  display: inline-block;
 }
 
 .nav_btn_logout {
@@ -73,6 +69,7 @@
   box-shadow: 0 0 1px 1px #d9d9d9;
   border: none;
   cursor: pointer;
+  display: inline-block;
 }
 
 .link {
@@ -92,17 +89,4 @@
 
 .underline {
   background-size: 100% 1px;
-}
-
-/************** media queries **************/
-@media only screen and (max-width: 1000px) {
-  .nav_desktop {
-    display: none;
-  }
-}
-
-@media only screen and (max-width: 450px) {
-  .nav {
-    margin: 0 10px;
-  }
 }

@@ -68,3 +68,55 @@
 .select:active {
   outline: 1px solid var(--primary-font-color);
 }
+
+.selectInstrumentsForm {
+  display: block;
+}
+
+/************** media queries **************/
+@media only screen and (max-width: 1250px) {
+  .mainWrapper {
+    column-gap: 0;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .imageWrapper {
+    display: none;
+  }
+
+  .mainWrapper {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media only screen and (max-width: 550px) {
+  .contentWrapper {
+    padding: 0;
+  }
+
+  .pageTitleText {
+    font-size: 50px;
+  }
+}
+
+@media only screen and (max-width: 460px) {
+  .selectInstrumentsForm {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .seOpslag_btn {
+    margin-left: 0;
+  }
+}
+
+@media only screen and (max-width: 420px) {
+  .mainWrapper {
+    padding: 0 20px 20px 20px;
+  }
+
+  .pageTitleText {
+    font-size: 42px;
+  }
+}
