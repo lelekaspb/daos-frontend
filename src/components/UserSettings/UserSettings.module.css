@@ -49,3 +49,22 @@
 .change_password_form {
   margin-bottom: 70px;
 }
+
+/************** media queries **************/
+@media only screen and (max-width: 550px) {
+  .content {
+    max-width: 400px;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .content {
+    max-width: 350px;
+  }
+}
+
+@media only screen and (max-width: 380px) {
+  .content {
+    max-width: 280px;
+  }
+}

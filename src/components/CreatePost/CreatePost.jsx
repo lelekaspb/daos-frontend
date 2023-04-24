@@ -4,6 +4,7 @@ import styles from "./CreatePost.module.css";
 import { useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useGlobalContext } from "../../context/GlobalContext";
+import Preloader from "../Preloader/Preloader";
 
 const CreatePost = () => {
   const { userInfo, setUserInfo } = useGlobalContext();
@@ -55,6 +56,7 @@ const CreatePost = () => {
   };
 
   const [errors, setErrors] = useState(initialErrorsState);
+  const [loading, setLoading] = useState(false);
 
   let navigate = useNavigate();
   const redirectToProfile = () => {
@@ -85,7 +87,8 @@ const CreatePost = () => {
   };
 
   const createPost = async () => {
-    const url = `http://127.0.0.1:3007/post`;
+    // const url = `http://127.0.0.1:3007/post`;
+    const url = `https://daos.onrender.com/post`;
     const options = {
       method: "POST",
       headers: {
@@ -96,8 +99,10 @@ const CreatePost = () => {
     };
 
     try {
+      setLoading(true);
       const request = await fetch(url, options);
       const data = await request.json();
+      setLoading(false);
 
       // reset errors atate in order to hide errors from previous query that might have been fixed in this one
       setErrors(initialErrorsState);
@@ -129,17 +134,21 @@ const CreatePost = () => {
 
   return (
     <main className={styles.main}>
-      <section className={styles.content}>
-        <BackLink component="/profile" />
-        <h2 className={styles.page_heading}>Opret opslag</h2>
-        <PostForm
-          handleSubmit={handleSubmit}
-          setPostData={setPostData}
-          postData={postData}
-          errors={errors}
-          action="Opret"
-        />
-      </section>
+      {loading ? (
+        <Preloader />
+      ) : (
+        <section className={styles.content}>
+          <BackLink component="/profile" />
+          <h2 className={styles.page_heading}>Opret opslag</h2>
+          <PostForm
+            handleSubmit={handleSubmit}
+            setPostData={setPostData}
+            postData={postData}
+            errors={errors}
+            action="Opret"
+          />
+        </section>
+      )}
     </main>
   );
 };

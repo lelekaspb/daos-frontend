@@ -4,6 +4,7 @@ import PostForm from "../PostForm/PostForm";
 import { useState } from "react";
 import { useNavigate, useLocation, Navigate } from "react-router-dom";
 import { useGlobalContext } from "../../context/GlobalContext";
+import Preloader from "../Preloader/Preloader";
 
 const EditPost = () => {
   const { userInfo, setUserInfo } = useGlobalContext();
@@ -53,6 +54,7 @@ const EditPost = () => {
   };
 
   const [errors, setErrors] = useState(initialErrorsState);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -94,7 +96,8 @@ const EditPost = () => {
   };
 
   const editPost = async () => {
-    const url = `http://127.0.0.1:3007/post/${postId}`;
+    // const url = `http://127.0.0.1:3007/post/${postId}`;
+    const url = `https://daos.onrender.com/post/${postId}`;
     const options = {
       method: "PUT",
       headers: {
@@ -105,12 +108,13 @@ const EditPost = () => {
     };
 
     try {
+      setLoading(true);
       const request = await fetch(url, options);
       const data = await request.json();
 
       // reset errors atate in order to hide errors from previous query that might have been fixed in this one
       setErrors(initialErrorsState);
-
+      setLoading(false);
       // check response
       if (data.error) {
         // if 422 - update errors state
@@ -136,17 +140,21 @@ const EditPost = () => {
 
   return (
     <main className={styles.main}>
-      <section className={styles.content}>
-        <BackLink component={`/profile/post/${postId}`} />
-        <h2 className={styles.page_heading}>Rediger opslag</h2>
-        <PostForm
-          handleSubmit={handleSubmit}
-          setPostData={setPostData}
-          postData={postData}
-          errors={errors}
-          action="Rediger"
-        />
-      </section>
+      {loading ? (
+        <Preloader />
+      ) : (
+        <section className={styles.content}>
+          <BackLink component={`/profile/post/${postId}`} />
+          <h2 className={styles.page_heading}>Rediger opslag</h2>
+          <PostForm
+            handleSubmit={handleSubmit}
+            setPostData={setPostData}
+            postData={postData}
+            errors={errors}
+            action="Rediger"
+          />
+        </section>
+      )}
     </main>
   );
 };

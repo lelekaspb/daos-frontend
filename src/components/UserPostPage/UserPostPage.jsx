@@ -4,6 +4,8 @@ import RepresentativeSvg from "../RepresentativeSvg/RepresentativeSvg";
 import { useNavigate, Link, Navigate, useParams } from "react-router-dom";
 import PinSvg from "../PinSvg/PinSvg";
 import { useGlobalContext } from "../../context/GlobalContext";
+import Preloader from "../Preloader/Preloader";
+import { useState } from "react";
 
 const UserPostPage = () => {
   const { userInfo, setUserInfo } = useGlobalContext();
@@ -16,8 +18,11 @@ const UserPostPage = () => {
 
   const post = userInfo.posts.find((item) => item._id === postId);
 
+  const [loading, setLoading] = useState(false);
+
   const deletePost = async (event) => {
-    const url = `http://127.0.0.1:3007/post/${postId}`;
+    // const url = `http://127.0.0.1:3007/post/${postId}`;
+    const url = `https://daos.onrender.com/post/${postId}`;
     const options = {
       method: "DELETE",
       headers: {
@@ -27,6 +32,7 @@ const UserPostPage = () => {
     };
 
     try {
+      setLoading(true);
       let response = await fetch(url, options);
       response = await response.json();
       if (response.success) {
@@ -48,6 +54,7 @@ const UserPostPage = () => {
           redirectToProfilePage();
         }
       }
+      setLoading(false);
     } catch (err) {
       console.error(err);
     }
@@ -60,64 +67,68 @@ const UserPostPage = () => {
 
   return (
     <main className={styles.main}>
-      <section className={styles.content}>
-        <BackLink component="/profile" />
-        <h2 className={styles.page_heading}>{post.title}</h2>
-        <span className={styles.created_at}>
-          Opslag oprettet{" "}
-          {new Date(post.createdAt).toLocaleString("da-DK", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-        </span>
-        <div className={styles.rep}>
-          <RepresentativeSvg />
-          <span className={styles.rep_text}>
-            {" "}
-            {post.type === "looking" && post.orchestraName.length > 0
-              ? post.orchestraName
-              : `${userInfo.firstName} ${userInfo.lastName}`}
+      {loading ? (
+        <Preloader />
+      ) : (
+        <section className={styles.content}>
+          <BackLink component="/profile" />
+          <h2 className={styles.page_heading}>{post.title}</h2>
+          <span className={styles.created_at}>
+            Opslag oprettet{" "}
+            {new Date(post.createdAt).toLocaleString("da-DK", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
           </span>
-        </div>
-        <div className={styles.location}>
-          <PinSvg />
-          <span className={styles.location_text}>{post.location}</span>
-        </div>
-
-        <div className={styles.buttons}>
-          <Link to="edit" state={postId}>
-            <button className={styles.edit_btn}>Rediger opslag</button>
-          </Link>
-          <button className={styles.delete_btn} onClick={deletePost}>
-            Slet opslag
-          </button>
-        </div>
-
-        <div className={styles.instrument}>
-          <span className={styles.label}>Instrument</span>
-          <p className={styles.instrument_text}>
-            {post.instrument}{" "}
-            {post.type === "looking" ? "(Søges)" : "(Tilbytes)"}
-          </p>
-        </div>
-
-        {post.description && post.description.length > 0 && (
-          <div className={styles.description}>
-            <span className={styles.label}>Beskrivelse</span>
-            <p className={styles.description_text}>{post.description}</p>
+          <div className={styles.rep}>
+            <RepresentativeSvg />
+            <span className={styles.rep_text}>
+              {" "}
+              {post.type === "looking" && post.orchestraName.length > 0
+                ? post.orchestraName
+                : `${userInfo.firstName} ${userInfo.lastName}`}
+            </span>
           </div>
-        )}
-
-        {post.website && post.website.length > 0 && (
-          <div className={styles.website}>
-            <span className={styles.label}>Hjemmeside</span>
-            <a href={post.website} target="_blank">
-              {post.website}
-            </a>
+          <div className={styles.location}>
+            <PinSvg />
+            <span className={styles.location_text}>{post.location}</span>
           </div>
-        )}
-      </section>
+
+          <div className={styles.buttons}>
+            <Link to="edit" state={postId}>
+              <button className={styles.edit_btn}>Rediger opslag</button>
+            </Link>
+            <button className={styles.delete_btn} onClick={deletePost}>
+              Slet opslag
+            </button>
+          </div>
+
+          <div className={styles.instrument}>
+            <span className={styles.label}>Instrument</span>
+            <p className={styles.instrument_text}>
+              {post.instrument}{" "}
+              {post.type === "looking" ? "(Søges)" : "(Tilbytes)"}
+            </p>
+          </div>
+
+          {post.description && post.description.length > 0 && (
+            <div className={styles.description}>
+              <span className={styles.label}>Beskrivelse</span>
+              <p className={styles.description_text}>{post.description}</p>
+            </div>
+          )}
+
+          {post.website && post.website.length > 0 && (
+            <div className={styles.website}>
+              <span className={styles.label}>Hjemmeside</span>
+              <a href={post.website} target="_blank">
+                {post.website}
+              </a>
+            </div>
+          )}
+        </section>
+      )}
     </main>
   );
 };

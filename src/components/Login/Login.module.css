@@ -53,3 +53,30 @@
   display: inline-block;
   margin-top: 50px;
 }
+
+/************** media queries **************/
+@media only screen and (max-width: 550px) {
+  .content {
+    max-width: 400px;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .content {
+    max-width: 300px;
+  }
+
+  .row {
+    flex-direction: column;
+  }
+
+  .row > * {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  .content {
+    max-width: 280px;
+  }
+}

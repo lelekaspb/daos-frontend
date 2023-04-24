@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import Post from "../Post/Post";
 import { useLocation } from "react-router-dom";
+import Preloader from "../Preloader/Preloader";
 
 const AllPosts = () => {
   const location = useLocation();
@@ -11,10 +12,12 @@ const AllPosts = () => {
   const [filter, setFilter] = useState(frontpageFilter || defaultFilter);
 
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const url = `http://127.0.0.1:3007/post/find`;
+      // const url = `http://127.0.0.1:3007/post/find`;
+      const url = `https://daos.onrender.com/post/find`;
       const options = {
         method: "POST",
         headers: {
@@ -24,8 +27,10 @@ const AllPosts = () => {
       };
 
       try {
+        setLoading(true);
         const request = await fetch(url, options);
         const data = await request.json();
+        setLoading(false);
         if (data.success) {
           // set posts state
           setPosts([...data.posts]);
@@ -80,97 +85,103 @@ const AllPosts = () => {
 
   return (
     <main className={styles.main}>
-      <section className={styles.filter}>
-        <div className={styles.filter_content}>
-          {" "}
-          <h2 className={styles.page_heading}>Opslag</h2>
-          <div className={styles.posts_count}>
-            <span>{posts.length}</span> opslag fundet
-          </div>
-          <form className={styles.filter_form}>
-            <div className={styles.post_instrument}>
-              <label className={styles.label} htmlFor="instrument_select">
-                Instrument
-              </label>
-              <select
-                className={styles.select}
-                id="instrument_select"
-                data-filter="instrument"
-                onChange={updateFilter}
-                value={filter.instrument}
-              >
-                <option value="all" defaultValue>
-                  Alle
-                </option>
-                <option value="Piano">Piano</option>
-                <option value="Flute">Flute</option>
-                <option value="Drums">Drums</option>
-                <option value="Guitar">Guitar</option>
-              </select>
-            </div>
-
-            <div className={styles.post_types}>
-              <label className={styles.label} htmlFor="buttons">
-                Opslagstype
-              </label>
-
-              <div className={styles.buttons}>
-                <button
-                  type="button"
-                  data-value="all"
-                  data-filter="posts"
-                  className={`${
-                    filter.posts === "all"
-                      ? styles.filter_button_active
-                      : styles.filter_button_inactive
-                  } `}
-                  onClick={updateFilter}
-                >
-                  Alle
-                </button>
-                <button
-                  type="button"
-                  data-value="musicians"
-                  data-filter="posts"
-                  className={`${
-                    filter.posts === "musicians"
-                      ? styles.filter_button_active
-                      : styles.filter_button_inactive
-                  } `}
-                  onClick={updateFilter}
-                >
-                  Find musikere
-                </button>
-                <button
-                  type="button"
-                  data-value="ensembles"
-                  data-filter="posts"
-                  className={`${
-                    filter.posts === "ensembles"
-                      ? styles.filter_button_active
-                      : styles.filter_button_inactive
-                  } `}
-                  onClick={updateFilter}
-                >
-                  Find ensembler
-                </button>
+      {loading ? (
+        <Preloader />
+      ) : (
+        <>
+          <section className={styles.filter}>
+            <div className={styles.filter_content}>
+              {" "}
+              <h2 className={styles.page_heading}>Opslag</h2>
+              <div className={styles.posts_count}>
+                <span>{posts.length}</span> opslag fundet
               </div>
+              <form className={styles.filter_form}>
+                <div className={styles.post_instrument}>
+                  <label className={styles.label} htmlFor="instrument_select">
+                    Instrument
+                  </label>
+                  <select
+                    className={styles.select}
+                    id="instrument_select"
+                    data-filter="instrument"
+                    onChange={updateFilter}
+                    value={filter.instrument}
+                  >
+                    <option value="all" defaultValue>
+                      Alle
+                    </option>
+                    <option value="Piano">Piano</option>
+                    <option value="Flute">Flute</option>
+                    <option value="Drums">Drums</option>
+                    <option value="Guitar">Guitar</option>
+                  </select>
+                </div>
+
+                <div className={styles.post_types}>
+                  <label className={styles.label} htmlFor="buttons">
+                    Opslagstype
+                  </label>
+
+                  <div className={styles.buttons}>
+                    <button
+                      type="button"
+                      data-value="all"
+                      data-filter="posts"
+                      className={`${
+                        filter.posts === "all"
+                          ? styles.filter_button_active
+                          : styles.filter_button_inactive
+                      } `}
+                      onClick={updateFilter}
+                    >
+                      Alle
+                    </button>
+                    <button
+                      type="button"
+                      data-value="musicians"
+                      data-filter="posts"
+                      className={`${
+                        filter.posts === "musicians"
+                          ? styles.filter_button_active
+                          : styles.filter_button_inactive
+                      } `}
+                      onClick={updateFilter}
+                    >
+                      Find musikere
+                    </button>
+                    <button
+                      type="button"
+                      data-value="ensembles"
+                      data-filter="posts"
+                      className={`${
+                        filter.posts === "ensembles"
+                          ? styles.filter_button_active
+                          : styles.filter_button_inactive
+                      } `}
+                      onClick={updateFilter}
+                    >
+                      Find ensembler
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
-          </form>
-        </div>
-      </section>
-      <section className={styles.posts}>
-        <div className={styles.posts_content}>
-          {posts.length > 0 && listOfPosts}
-          {/* {listOfPosts} */}
-          {posts.length === 0 && (
-            <p className={styles.no_posts_msg}>
-              Der er ingen opslag, der matcher din anmodning. Prøv at justere
-              filteret.
-            </p>
-          )}
-        </div>
-      </section>
+          </section>
+          <section className={styles.posts}>
+            <div className={styles.posts_content}>
+              {posts.length > 0 && listOfPosts}
+              {/* {listOfPosts} */}
+              {posts.length === 0 && (
+                <p className={styles.no_posts_msg}>
+                  Der er ingen opslag, der matcher din anmodning. Prøv at
+                  justere filteret.
+                </p>
+              )}
+            </div>
+          </section>
+        </>
+      )}
     </main>
   );
 };

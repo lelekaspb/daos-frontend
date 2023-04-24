@@ -1,9 +1,17 @@
 import styles from "./Header.module.css";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../../context/GlobalContext";
+import Burger from "./../BurgerMenu/Burger";
+import { useState } from "react";
+import BurgerMenu from "./../BurgerMenu/BurgerMenu";
 
 const Header = () => {
   const { userInfo, resetUserInfoState } = useGlobalContext();
+
+  const [burgerOpen, setBurgerOpen] = useState(false);
+  const toggleBurger = () => {
+    setBurgerOpen(!burgerOpen);
+  };
 
   let navigate = useNavigate();
   const redirectToLogin = () => {
@@ -28,7 +36,7 @@ const Header = () => {
         </div>
 
         <div className={styles.nav_right}>
-          <ul>
+          <ul className={styles.nav_desktop}>
             <li className={styles.nav_link}>
               <NavLink
                 to="/orchestras"
@@ -91,8 +99,20 @@ const Header = () => {
               </li>
             )}
           </ul>
+
+          <div className={styles.burger_wrapper}>
+            <Burger toggleBurger={toggleBurger} isOpen={burgerOpen} />
+          </div>
         </div>
       </nav>
+
+      {burgerOpen && (
+        <BurgerMenu
+          toggleBurger={toggleBurger}
+          logout={logout}
+          isOpen={burgerOpen}
+        />
+      )}
     </header>
   );
 };

@@ -3,6 +3,7 @@ import FormField from "../FormField/FormField";
 import styles from "./Login.module.css";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../../context/GlobalContext";
+import Preloader from "../Preloader/Preloader";
 
 const Login = () => {
   const { userInfo, setUserInfo } = useGlobalContext();
@@ -16,6 +17,7 @@ const Login = () => {
     haserror: false,
     message: "",
   });
+  const [loading, setLoading] = useState(false);
 
   let navigate = useNavigate();
   const redirectToProfile = () => {
@@ -35,7 +37,8 @@ const Login = () => {
   };
 
   const signUserIn = async () => {
-    const url = "http://127.0.0.1:3007/auth/login";
+    // const url = "http://127.0.0.1:3007/auth/login";
+    const url = "https://daos.onrender.com/auth/login";
     const options = {
       method: "POST",
       headers: {
@@ -45,8 +48,10 @@ const Login = () => {
     };
 
     try {
+      setLoading(true);
       const request = await fetch(url, options);
       const data = await request.json();
+      setLoading(false);
       if (!data.success) {
         // display error message received from the server
         setError({ ...error, haserror: true, message: data.message });
@@ -85,43 +90,47 @@ const Login = () => {
 
   return (
     <main className={styles.main}>
-      <section className={styles.content}>
-        <h2 className={styles.page_heading}>Log Ind</h2>
-        <form
-          className={styles.login_form}
-          onSubmit={handleSubmit}
-          // autoComplete="off"
-        >
-          <div className={styles.row}>
-            <FormField
-              name="email"
-              text="E-mail"
-              type="email"
-              handleInput={handleInput}
-              value={userData.email}
-              // isRequired={true}
-            />
-            <FormField
-              name="password"
-              text="Adgangskode"
-              type="password"
-              handleInput={handleInput}
-              value={userData.password}
-              // isRequired={true}
-            />
-          </div>
-          {error.haserror && (
-            <div className={styles.help_block}>{error.message}</div>
-          )}
+      {loading ? (
+        <Preloader />
+      ) : (
+        <section className={styles.content}>
+          <h2 className={styles.page_heading}>Log Ind</h2>
+          <form
+            className={styles.login_form}
+            onSubmit={handleSubmit}
+            // autoComplete="off"
+          >
+            <div className={styles.row}>
+              <FormField
+                name="email"
+                text="E-mail"
+                type="email"
+                handleInput={handleInput}
+                value={userData.email}
+                // isRequired={true}
+              />
+              <FormField
+                name="password"
+                text="Adgangskode"
+                type="password"
+                handleInput={handleInput}
+                value={userData.password}
+                // isRequired={true}
+              />
+            </div>
+            {error.haserror && (
+              <div className={styles.help_block}>{error.message}</div>
+            )}
 
-          <div className={styles.submit_field}>
-            <button className={styles.submit_btn}>Log Ind</button>
-          </div>
-        </form>
-        <a href="#" className={styles.forgotten_password}>
-          Glemt adgangskode?
-        </a>
-      </section>
+            <div className={styles.submit_field}>
+              <button className={styles.submit_btn}>Log Ind</button>
+            </div>
+          </form>
+          <a href="#" className={styles.forgotten_password}>
+            Glemt adgangskode?
+          </a>
+        </section>
+      )}
     </main>
   );
 };

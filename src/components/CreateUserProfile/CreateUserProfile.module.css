@@ -41,3 +41,30 @@
 .name_fields > * {
   width: 48%;
 }
+
+/************** media queries **************/
+@media only screen and (max-width: 550px) {
+  .content {
+    max-width: 400px;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .content {
+    max-width: 300px;
+  }
+
+  .name_fields {
+    flex-direction: column;
+  }
+
+  .name_fields > * {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  .content {
+    max-width: 280px;
+  }
+}

@@ -12,7 +12,7 @@ const FrontPageContent = ({
   return (
     <div className={styles.dropdown}>
       <div className={styles.musicInstruments}>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={styles.selectInstrumentsForm}>
           <select
             id="instruments"
             name="instruments"
